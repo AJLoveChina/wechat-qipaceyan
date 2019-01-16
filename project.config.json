@@ -1,0 +1,13 @@
+{
+  "description": "奇葩小测验",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram",
+  "appid": "wx851c0d227438cb61",
+  "projectname": "qipaxiaoceyan-wepy",
+  "miniprogramRoot": "./dist"
+}
