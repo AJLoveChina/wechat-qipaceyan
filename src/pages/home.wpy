@@ -1,9 +1,32 @@
 <style>
-
+  .title{
+    font-family: "Microsoft YaHei UI";
+    font-weight: bold;
+    font-size:30px;
+    color:lightblue;
+    text-align: center;
+    display: block;
+    margin:20px;
+  }
+  .title2{
+    color:#aaa;
+  }
 </style>
 <template>
   <view>
-    HOME
+    <text class="title">奇葩小测验</text>
+
+    <van-cell
+      title-class="title2"
+      title="选择考卷" />
+    <van-cell-group>
+      <van-cell
+        title="英雄联盟"
+        icon="fire"
+        url="play?id=yxlm"
+        is-link="{{true}}" />
+    </van-cell-group>
+
   </view>
 </template>
 <script>
@@ -22,9 +45,22 @@
         onShow() {
         }  // 只在Page中存在的页面生命周期函数
 
-        config = {};  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+          usingComponents: {
+            zbtn: "../components/zanui/button/index",
+            zpanel: "../components/zanui/panel/index",
+            zrow: "../components/zanui/row/index",
+            zcol: "../components/zanui/col/index",
+            zcollapse: "../components/zanui/collapse/index",
+            "zcollapse-item": "../components/zanui/collapse-item/index",
+            "van-cell": "../components/zanui/cell/index",
+            "van-cell-group": "../components/zanui/cell-group/index"
+          }
+        };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
-        data = {};  // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+          activeNames: []
+        };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
         components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
 
