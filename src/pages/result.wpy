@@ -3,45 +3,232 @@
 </style>
 <template>
 
+  <poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
+    <button>正在生成海报...</button>
+  </poster>
+
 </template>
 <script>
-    import wepy from 'wepy';
-    import LOG from 'easy.log.js'
+  import wepy from 'wepy';
+  import LOG from 'easy.log.js'
 
-    const log = LOG("app.result");
+  const log = LOG("app.result");
 
-    export default class MyPage extends wepy.page {
-        customData = {}  // 自定义数据
+  export default class MyPage extends wepy.page {
+    customData = {}  // 自定义数据
 
-        customFunction() {
-        }  //自定义方法
+    customFunction() {
+    }  //自定义方法
 
-        onLoad(options) {
-          let params = Object.assign({
-            id: 'yxlm',
-            rightNum: 2,
-            pj: "被联盟认定为超凡大师"
-          }, options);
-          log(params)
-        }  // 在Page和Component共用的生命周期函数
 
-        onShow() {
-        }  // 只在Page中存在的页面生命周期函数
-
-        config = {};  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
-
-        data = {};  // 页面所需数据均需在这里声明，可用于模板数据绑定
-
-        components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
-
-        mixins = [];  // 声明页面所引用的Mixin实例
-
-        computed = {};  // 声明计算属性（详见后文介绍）
-
-        watch = {};  // 声明数据watcher（详见后文介绍）
-
-        methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-
-        events = {};  // 声明组件之间的事件处理函数
+    onPosterSuccess(e) {
+      const { detail } = e;
+      wx.previewImage({
+        current: detail,
+        urls: [detail]
+      })
     }
+
+    onPosterFail() {
+
+    }
+
+    onLoad(options) {
+      let params = Object.assign({
+        id: 'yxlm',
+        rightNum: 2,
+        pj: "被联盟认定为超凡大师"
+      }, options);
+      log(params)
+
+      this.id = params.id;
+      this.rightNum = params.rightNum;
+      this.pj = params.pj;
+
+      this.posterConfig = {
+        width: 750,
+        height: 1334,
+        backgroundColor: '#fff',
+        debug: false,
+        blocks: [
+          {
+            width: 690,
+            height: 808,
+            x: 30,
+            y: 183,
+            borderWidth: 2,
+            borderColor: '#f0c2a0',
+            borderRadius: 20,
+          },
+          {
+            width: 634,
+            height: 74,
+            x: 59,
+            y: 770,
+            backgroundColor: '#fff',
+            opacity: 0.5,
+            zIndex: 100,
+          },
+        ],
+        texts: [
+          {
+            x: 113,
+            y: 61,
+            baseLine: 'middle',
+            text: 'Baker',
+            fontSize: 32,
+            color: '#8d8d8d',
+          },
+          {
+            x: 30,
+            y: 113,
+            baseLine: 'top',
+            text: '我刚刚参加了英雄联盟段位考试',
+            fontSize: 38,
+            color: '#080808',
+          },
+          {
+            x: 92,
+            y: 810,
+            fontSize: 38,
+            baseLine: 'middle',
+            text: '',
+            width: 570,
+            lineNum: 1,
+            color: '#666',
+            zIndex: 200,
+          },
+          {
+            x: 59,
+            y: 895,
+            baseLine: 'middle',
+            text: [
+              {
+                text: '完成',
+                fontSize: 28,
+                color: '#ec1731',
+              },
+              {
+                text: '10道题',
+                fontSize: 36,
+                color: '#ec1731',
+                marginLeft: 30,
+              }
+            ]
+          },
+          {
+            x: 522,
+            y: 895,
+            baseLine: 'middle',
+            text: '共20题',
+            fontSize: 28,
+            color: '#929292',
+          },
+          {
+            x: 59,
+            y: 945,
+            baseLine: 'middle',
+            text: [
+              {
+                text: '被联盟认定为超凡大师',
+                fontSize: 28,
+                color: '#ec1731',
+              },
+              // {
+              //     text: '七天退货',
+              //     fontSize: 28,
+              //     color: '#929292',
+              //     marginLeft: 50,
+              // },
+              // {
+              //     text: '运费险',
+              //     fontSize: 28,
+              //     color: '#929292',
+              //     marginLeft: 50,
+              // },
+            ]
+          },
+          {
+            x: 360,
+            y: 1065,
+            baseLine: 'top',
+            text: '长按识别小程序码',
+            fontSize: 38,
+            color: '#080808',
+          },
+          {
+            x: 360,
+            y: 1123,
+            baseLine: 'top',
+            text: '和 baker 一较高下',
+            fontSize: 28,
+            color: '#929292',
+          },
+        ],
+        images: [
+          // 第一张图
+          {
+            width: 62,
+            height: 62,
+            x: 30,
+            y: 30,
+            borderRadius: 62,
+            url: 'http://localhost:4545/TIM截图20190117174032.jpg',
+          },
+          {
+            width: 634,
+            height: 634,
+            x: 59,
+            y: 210,
+            url: 'http://localhost:4545/11222746.jpg',
+          },
+          {
+            width: 220,
+            height: 220,
+            x: 92,
+            y: 1020,
+            url: 'http://localhost:4545/TIM截图20190117174303.jpg',
+          },
+          {
+            width: 750,
+            height: 90,
+            x: 0,
+            y: 1244,
+            url: 'http://localhost:4545/20190117173013.png',
+          }
+        ]
+
+      };
+
+      //this.$invoke("poster", "create");
+    }  // 在Page和Component共用的生命周期函数
+
+    onShow() {
+    }  // 只在Page中存在的页面生命周期函数
+
+    config = {
+      usingComponents: {
+        "poster": "../components/poster-canvas/poster/index"
+      }
+    };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+
+    data = {
+      id: "",
+      rightNum: 0,
+      pj: "",
+      posterConfig: {}
+    };  // 页面所需数据均需在这里声明，可用于模板数据绑定
+
+    components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+
+    mixins = [];  // 声明页面所引用的Mixin实例
+
+    computed = {};  // 声明计算属性（详见后文介绍）
+
+    watch = {};  // 声明数据watcher（详见后文介绍）
+
+    methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+
+    events = {};  // 声明组件之间的事件处理函数
+  }
 </script>
