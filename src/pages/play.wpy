@@ -3,14 +3,16 @@
 </style>
 <template>
   <view>
-    <examMonitor data="{{data}}"></examMonitor>
+    <view wx:if="{{item != null}}">
+      <examMonitor :item.sync="item" :id.sync="id"></examMonitor>
+    </view>
   </view>
 </template>
 <script>
   import wepy from 'wepy';
   import DATA from '../data/data'
   import LOG from 'easy.log.js'
-  import examMonitor from '@/components/exam-monitor'
+  import examMonitor from '../components/exam-monitor'
   let log = LOG("app.play");
 
   export default class MyPage extends wepy.page {
@@ -22,10 +24,11 @@
 
     onLoad(options) {
       log(options);
-      this.id = options.id;
+      this.id = options.id || "yxlm";
       let data = DATA[this.id];
-      this.datas = data;
       log(data);
+
+      this.item = data;
     }  // 在Page和Component共用的生命周期函数
 
     onShow() {
@@ -35,7 +38,7 @@
 
     data = {
       id: "",
-      datas: null
+      item: {}
     };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
     components = {

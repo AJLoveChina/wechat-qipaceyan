@@ -54,7 +54,7 @@
 
       <text class="testcounter">计数组件1: </text>
       <view class="counterview">
-        <counter1 @index-emit.user="counterEmit" />
+        <counter1 :num.sync="myNum2" @index-emit.user="counterEmit" />
       </view>
 
       <text class="testcounter">计数组件2: </text>
@@ -122,6 +122,7 @@
 
     data = {
       mynum: 20,
+      myNum2: 520,
       userInfo: {
         nickName: '加载中...'
       },

@@ -1,0 +1,128 @@
+<style scoped lang="less">
+  .paper-title{
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    display: block;
+    font-size:14px;
+    text-align: center;
+    padding:10px;
+    box-sizing: border-box;
+  }
+
+  .percentage-wrap{
+    padding:20px;
+
+    .tip{
+      display: block;
+      font-size:12px;
+      line-height:20px;
+      padding:10px 0;
+    }
+  }
+
+  .q-wrap{
+    padding:20px;
+
+    .q{
+      font-size:14px;
+      font-weight:bold;
+      line-height: 20px;
+    }
+
+    .choice-wrap{
+      margin-top:20px;
+    }
+  }
+</style>
+<template>
+  <view>
+    <text class="paper-title">{{item.title}}</text>
+
+    <view class="percentage-wrap">
+      <text class="tip">当前进度</text>
+      <van-progress percentage="{{percentage}}"></van-progress>
+    </view>
+
+    <view class="q-wrap">
+
+      <text class="q">{{question.q}}</text>
+
+      <view class="choice-wrap">
+        <van-cell-group>
+          <repeat for="{{question.c}}" item="one">
+            <van-cell
+              title="{{one}}"
+            />
+          </repeat>
+        </van-cell-group>
+
+      </view>
+
+    </view>
+  </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import LOG from 'easy.log.js'
+    import DATA from '../data/data'
+    const log = LOG("app.choices");
+
+    export default class MyPage extends wepy.page {
+    // export default class MyComponent extends wepy.component {
+        customData = {}  // 自定义数据
+
+        customFunction() {
+        }  //自定义方法
+
+        onLoad(options) {
+          let id = options.id || "yxlm";
+          let item = DATA[id];
+          this.item = item;
+          this.id = id;
+          log(item);
+        }  // 在Page和Component共用的生命周期函数
+
+        onShow() {
+        }  // 只在Page中存在的页面生命周期函数
+
+        config = {
+          usingComponents: {
+            "van-btn": "../components/zanui/button/index",
+            "van-progress": "../components/zanui/progress/index",
+            "van-checkbox": "../components/zanui/checkbox/index",
+            "van-cell": "../components/zanui/cell/index",
+            "van-cell-group": "../components/zanui/cell-group/index",
+          }
+        };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+
+        data = {
+          id: "",
+          item: null,
+          index: 0
+        };  // 页面所需数据均需在这里声明，可用于模板数据绑定
+
+        components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+
+        mixins = [];  // 声明页面所引用的Mixin实例
+
+        computed = {
+          question() {
+            if(this.item == null) {
+              return {};
+            }
+            return this.item.questions[this.index];
+          },
+          percentage() {
+            if (this.index === 0) return 0;
+            return this.index / this.item.questions.length;
+          }
+        };  // 声明计算属性（详见后文介绍）
+
+        watch = {};  // 声明数据watcher（详见后文介绍）
+
+        methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+
+        events = {};  // 声明组件之间的事件处理函数
+    }
+</script>

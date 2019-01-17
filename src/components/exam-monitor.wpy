@@ -1,17 +1,122 @@
-<style>
+<style scoped lang="less">
+  .top-img{
+    text-align: center;
+  }
+  .info {
+    display: block;
+    box-sizing: border-box;
+    padding:10px;
+    color:#666;
+    font-size:12px;
+  }
+  .info .bold{
+    font-weight:bold;
+  }
+  .info text{
+    display: block;
+  }
+  .wrap{
+    margin:0 30px;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
 
+    .img{
+      text-align: center;
+      height:300px;
+      background-color: #eeeeee;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      image{
+        width:100%;
+      }
+    }
+
+    .info{
+      padding:20px;
+
+      .title{
+        font-weight:bold;
+        font-size:16px;
+        padding:0 0 10px;
+      }
+
+      text{
+        line-height: 20px;
+      }
+
+      .counter{
+        font-size:12px;
+        border-radius:5px;
+        padding:3px 5px;
+        background-color: lightcoral;
+        display: inline-block;
+        color:white;
+      }
+    }
+
+    .start-btn{
+      background-color: #17a2b8;
+      color:white;
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      font-size:14px;
+      height:30px;
+      line-height: 30px;
+      margin:10px 20px;
+    }
+  }
 </style>
 <template>
-  <view>exam monitor</view>
+  <view>
+    <view class="wrap">
+      <view class="img">
+        <image class="top-img" mode="center" src="{{item.img}}"></image>
+      </view>
+      <view class="info">
+        <text class="title">{{item.desc}}</text>
+        <text class="counter">  共{{item.questions.length}}题目</text>
+
+        <view class="tips">
+          <repeat for="{{item.tips}}" key="index" index="index" item="item">
+            <text>{{item}}</text>
+          </repeat>
+        </view>
+      </view>
+
+      <button class="start-btn" @tap="start">开始</button>
+    </view>
+
+  </view>
 </template>
 <script>
   import wepy from 'wepy';
+  import LOG from 'easy.log.js'
 
+  const log = LOG("app.examMonitor");
   // export default class MyPage extends wepy.page {
   export default class MyComponent extends wepy.component {
     customData = {}  // 自定义数据
     props = {
-      data: {}
+      item: {
+        type: Object
+      },
+      id : {
+        type: String
+      }
     }
 
     customFunction() {
@@ -23,19 +128,42 @@
     onShow() {
     }  // 只在Page中存在的页面生命周期函数
 
-    config = {};  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    config = {
+      usingComponents:{
+        "van-icon": "zanui/icon/index",
+        "van-tag": "./zanui/tag/index",
+        "van-btn": "../components/zanui/button/index"
+      }
+    };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
-    data = {};  // 页面所需数据均需在这里声明，可用于模板数据绑定
+    data = {
+      isStart: false,
+      index: 0,
+    };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
-    components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+    components = {
+    };  // 声明页面中所引用的组件，或声明组件中所引用的子组件
 
     mixins = [];  // 声明页面所引用的Mixin实例
 
-    computed = {};  // 声明计算属性（详见后文介绍）
+    computed = {
+      question() {
+        if (!this.isStart) {
+          return {};
+        }
+        return this.item.questions[this.index];
+      }
+    };  // 声明计算属性（详见后文介绍）
 
     watch = {};  // 声明数据watcher（详见后文介绍）
 
-    methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+    methods = {
+      start() {
+        wx.navigateTo({
+          url: "choices?id=" + this.id
+        });
+      }
+    };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
 
     events = {};  // 声明组件之间的事件处理函数
   }
