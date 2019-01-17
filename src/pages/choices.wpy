@@ -1,37 +1,57 @@
 <style scoped lang="less">
-  .paper-title{
+  .paper-title {
     color: #0c5460;
     background-color: #d1ecf1;
     border-color: #bee5eb;
     display: block;
-    font-size:14px;
+    font-size: 14px;
     text-align: center;
-    padding:10px;
+    padding: 10px;
     box-sizing: border-box;
   }
 
-  .percentage-wrap{
-    padding:20px;
+  .percentage-wrap {
+    padding: 20px;
 
-    .tip{
+    .tip {
       display: block;
-      font-size:12px;
-      line-height:20px;
-      padding:10px 0;
+      font-size: 12px;
+      line-height: 20px;
+      padding: 10px 0;
     }
   }
 
-  .q-wrap{
-    padding:20px;
+  .q-wrap {
+    padding: 20px;
 
-    .q{
-      font-size:14px;
-      font-weight:bold;
+    .q {
+      font-size: 14px;
+      font-weight: bold;
       line-height: 20px;
     }
 
-    .choice-wrap{
-      margin-top:20px;
+    .choice-wrap {
+      margin-top: 20px;
+
+      .choice {
+        color: #ccc;
+        position: relative;
+
+        .title {
+          display: inline-block;
+          height: 30px;
+          color: #333;
+        }
+      }
+    }
+  }
+
+  .tip-wrap {
+    margin-top: 20px;
+
+    .tip {
+      font-size: 12px;
+      color: #ccc;
     }
   }
 </style>
@@ -50,12 +70,37 @@
 
       <view class="choice-wrap">
         <van-cell-group>
-          <repeat for="{{question.c}}" item="one">
-            <van-cell
-              title="{{one}}"
-            />
+          <repeat for="{{question.c}}" item="one" index="index" key="index">
+            <view class="choice">
+              <van-cell
+                @tap="choose({{index}})">
+
+                <view slot="title">
+                  <text class="title">{{one}}</text>
+                </view>
+
+                <view slot="right-icon">
+                  <block wx:if="{{(currentChoiceIndex === index && isChoiceProcessing)}}">
+                    <van-loading size="20px" color="#333"></van-loading>
+                  </block>
+                  <block wx:if="{{(currentChoiceIndex === index && !isChoiceProcessing)}}">
+                    <block wx:if="{{currentChoiceIndex + 1 === question.a}}">
+                      <van-icon name="passed" color="#d1ecf1" size="20px"></van-icon>
+                    </block>
+                    <block wx:if="{{currentChoiceIndex + 1 !== question.a}}">
+                      <van-icon name="close" color="#f8d7da" size="20px"></van-icon>
+                    </block>
+                  </block>
+                </view>
+              </van-cell>
+            </view>
           </repeat>
         </van-cell-group>
+
+        <view class="tip-wrap">
+          <van-icon name="smile-o"></van-icon>
+          <text class="tip">点击即可选择</text>
+        </view>
 
       </view>
 
@@ -63,66 +108,116 @@
   </view>
 </template>
 <script>
-    import wepy from 'wepy';
-    import LOG from 'easy.log.js'
-    import DATA from '../data/data'
-    const log = LOG("app.choices");
+  import wepy from 'wepy';
+  import LOG from 'easy.log.js'
+  import DATA from '../data/data'
+  import util from '../common/util'
 
-    export default class MyPage extends wepy.page {
+  const log = LOG("app.choices");
+
+  export default class MyPage extends wepy.page {
     // export default class MyComponent extends wepy.component {
-        customData = {}  // 自定义数据
+    customData = {}  // 自定义数据
 
-        customFunction() {
-        }  //自定义方法
 
-        onLoad(options) {
-          let id = options.id || "yxlm";
-          let item = DATA[id];
-          this.item = item;
-          this.id = id;
-          log(item);
-        }  // 在Page和Component共用的生命周期函数
+    onLoad(options) {
+      let id = options.id || "yxlm";
+      let item = DATA[id];
+      this.item = item;
+      this.id = id;
+      log(item);
+    }  // 在Page和Component共用的生命周期函数
 
-        onShow() {
-        }  // 只在Page中存在的页面生命周期函数
+    onShow() {
+    }  // 只在Page中存在的页面生命周期函数
 
-        config = {
-          usingComponents: {
-            "van-btn": "../components/zanui/button/index",
-            "van-progress": "../components/zanui/progress/index",
-            "van-checkbox": "../components/zanui/checkbox/index",
-            "van-cell": "../components/zanui/cell/index",
-            "van-cell-group": "../components/zanui/cell-group/index",
-          }
-        };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    config = {
+      usingComponents: {
+        "van-btn": "../components/zanui/button/index",
+        "van-progress": "../components/zanui/progress/index",
+        "van-checkbox": "../components/zanui/checkbox/index",
+        "van-cell": "../components/zanui/cell/index",
+        "van-cell-group": "../components/zanui/cell-group/index",
+        "van-loading": "../components/zanui/loading/index",
+        "van-icon": "../components/zanui/icon/index",
+      }
+    };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
-        data = {
-          id: "",
-          item: null,
-          index: 0
-        };  // 页面所需数据均需在这里声明，可用于模板数据绑定
+    data = {
+      id: "",
+      item: null,
+      index: 0,
+      isChoiceProcessing: false,
+      currentChoiceIndex: -1,
+      isCanClickChoice: true,
+    };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
-        components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+    components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
 
-        mixins = [];  // 声明页面所引用的Mixin实例
+    mixins = [];  // 声明页面所引用的Mixin实例
 
-        computed = {
-          question() {
-            if(this.item == null) {
-              return {};
-            }
-            return this.item.questions[this.index];
-          },
-          percentage() {
-            if (this.index === 0) return 0;
-            return this.index / this.item.questions.length;
-          }
-        };  // 声明计算属性（详见后文介绍）
+    computed = {
+      question() {
+        if (this.item == null) {
+          return {};
+        }
+        return this.item.questions[this.index];
+      },
+      percentage() {
+        if (this.index === 0) return 0;
+        return this.index / this.item.questions.length * 100;
+      }
+    };  // 声明计算属性（详见后文介绍）
 
-        watch = {};  // 声明数据watcher（详见后文介绍）
+    watch = {};  // 声明数据watcher（详见后文介绍）
 
-        methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
 
-        events = {};  // 声明组件之间的事件处理函数
+    showHonor() {
+      let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
+      let anwserIndex = this.index;
+      let allCount = this.item.questions.length;
+
+      let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
+      if (levelIndex >= level.length) levelIndex = level.length - 1;
+      let levelResult = level[levelIndex];
+      let url = `result?id=${this.id}&rightNum=${this.index}&pj=被联盟认定为${levelResult}段位`
+
+      wx.navigateTo({
+        url
+      })
     }
+
+    methods = {
+      async choose(index) {
+        if (!this.isCanClickChoice) return;
+        this.isCanClickChoice = false;
+        this.isChoiceProcessing = true;
+        this.currentChoiceIndex = index;
+
+        await util.sleep(800);
+        this.isChoiceProcessing = false;
+        this.$apply();
+
+        await util.sleep(200);
+
+        if ((index + 1) === this.question.a) {
+          this.index += 1;
+
+          log(this.index, this.item.questions.length);
+          if (this.index >= this.item.questions.length) {
+            this.$apply();
+            return this.showHonor();
+          }
+
+          this.currentChoiceIndex = -1;
+          this.isCanClickChoice = true;
+          this.$apply();
+        } else {
+          this.showHonor();
+        }
+      }
+    };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+
+    events = {};  // 声明组件之间的事件处理函数
+  }
 </script>
