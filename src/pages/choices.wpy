@@ -255,7 +255,7 @@
       },
       percentage() {
         if (this.index === 0) return 0;
-        return this.index / this.item.questions.length * 100;
+        return Math.floor(this.index / this.item.questions.length * 100);
       }
     };  // 声明计算属性（详见后文介绍）
 
@@ -269,14 +269,9 @@
 
     showHonor() {
       this.clearInterval();
-      let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
-      let anwserIndex = this.index;
+      let honor = this.item.getHonor(this.index);
       let allCount = this.item.questions.length;
-
-      let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
-      if (levelIndex >= level.length) levelIndex = level.length - 1;
-      let levelResult = level[levelIndex];
-      let url = `result?id=${this.id}&rightNum=${this.index}&pj=被联盟认定为${levelResult}段位&allNum=${allCount}`;
+      let url = `result?id=${this.id}&rightNum=${this.index}&pj=${honor.pj}&allNum=${allCount}`;
 
       wx.navigateTo({
         url

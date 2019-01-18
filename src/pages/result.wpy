@@ -172,7 +172,7 @@
                 color: '#ec4b4b',
               },
               {
-                text: `${params.rightNum}`,
+                text: `${params.rightNum} 道题目`,
                 fontSize: 28,
                 color: '#ec4b4b',
                 marginLeft: 10,

@@ -92,7 +92,7 @@
 
         <view class="tips">
           <repeat for="{{item.tips}}" key="index" index="index" item="item">
-            <text>{{item}}</text>
+            <text>{{index + 1}}. {{item}}</text>
           </repeat>
         </view>
       </view>

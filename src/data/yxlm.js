@@ -2,10 +2,22 @@ module.exports = {
   title: "英雄联盟段位考试",
   desc: "英雄联盟段位考试, 最终得分将以段位形式展示 :)",
   tips: [
-    "每道题你有10秒钟的回答时间",
-    "段位分为青铜,白银,黄金,白金,钻石,超凡大师,最强王者"
+    "选错一题即失败",
+    "每题你只有10秒钟的回答时间",
+    "段位分为青铜,白银,黄金,白金,钻石,超凡大师,最强王者",
   ],
   img: "../images/yxlm.jpg",
+  getHonor(anwserIndex) {
+    let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
+    let allCount = this.questions.length;
+
+    let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
+    if (levelIndex >= level.length) levelIndex = level.length - 1;
+    let levelResult = level[levelIndex];
+    return {
+      pj: `被联盟认定为${levelResult}段位`
+    }
+  },
   questions: [
     {
       q: "英雄联盟召唤师峡谷开局多少秒才可以出泉水?",

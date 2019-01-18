@@ -29,8 +29,8 @@
       pages: [
         'pages/play',
         'pages/choices',
-        'pages/home',
         'pages/result',
+        'pages/home',
         'pages/index',
       ],
       window: {
