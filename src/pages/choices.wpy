@@ -194,6 +194,7 @@
     async onLoad(options) {
       let id = options.id || "yxlm";
       let item = DATA[id];
+      util.shuffle(item.questions);
       this.item = item;
       this.id = id;
       log(item);
