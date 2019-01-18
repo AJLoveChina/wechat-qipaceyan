@@ -9,6 +9,9 @@
     justify-content: space-between;
     box-sizing: border-box;
   }
+  .mt10{
+    margin-top:10px;
+  }
 </style>
 
 <script>
@@ -24,11 +27,11 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/choices',
         'pages/home',
         'pages/play',
         'pages/result',
         'pages/index',
-        'pages/choices',
       ],
       window: {
         backgroundTextStyle: 'light',

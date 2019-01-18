@@ -97,11 +97,12 @@
       let params = Object.assign({
         id: 'yxlm',
         rightNum: 2,
-        pj: "被联盟认定为超凡大师"
+        pj: "被联盟认定为超凡大师",
+        allNum: "20"
       }, options);
       let item = DATA[params.id];
       this.item = item;
-      log(params)
+      log(params);
 
       this.id = params.id;
       this.rightNum = params.rightNum;
@@ -171,7 +172,7 @@
                 color: '#ec4b4b',
               },
               {
-                text: '10道题',
+                text: `${params.rightNum}`,
                 fontSize: 28,
                 color: '#ec4b4b',
                 marginLeft: 10,
@@ -182,7 +183,7 @@
             x: 522,
             y: 895,
             baseLine: 'middle',
-            text: '共20题',
+            text: `共${params.allNum}题`,
             fontSize: 28,
             color: '#929292',
           },
@@ -192,7 +193,7 @@
             baseLine: 'middle',
             text: [
               {
-                text: '被联盟认定为超凡大师',
+                text: `${params.pj}`,
                 fontSize: 28,
                 color: '#ec4b4b',
               },

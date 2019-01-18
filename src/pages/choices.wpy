@@ -62,6 +62,14 @@
     <view class="percentage-wrap">
       <text class="tip">当前进度</text>
       <van-progress percentage="{{percentage}}"></van-progress>
+
+      <text class="tip mt10">剩余时间 : {{leftSeconds}}s</text>
+      <van-slider
+        value="{{ sliderLeft }}"
+        use-button-slot
+        bind:drag="onDrag"
+      >
+      </van-slider>
     </view>
 
     <view class="q-wrap">
@@ -105,6 +113,9 @@
       </view>
 
     </view>
+
+    <van-toast id="custom-selector" />
+    <van-notify id="van-notify" />
   </view>
 </template>
 <script>
@@ -112,6 +123,8 @@
   import LOG from 'easy.log.js'
   import DATA from '../data/data'
   import util from '../common/util'
+  import Toast from '../components/zanui/toast/toast';
+  import Notify from '../components/zanui/notify/notify';
 
   const log = LOG("app.choices");
 
@@ -120,12 +133,74 @@
     customData = {}  // 自定义数据
 
 
-    onLoad(options) {
+    daojishi() {
+      return new Promise((resolve, reject) => {
+        let second = 5;
+
+        const toast = Toast.loading({
+          duration: 0,       // 持续展示 toast
+          forbidClick: true, // 禁用背景点击
+          message: `倒计时 ${second} 秒`,
+          loadingType: 'spinner',
+          selector: '#custom-selector'
+        });
+
+
+        const timer = setInterval(() => {
+          second--;
+          if (second) {
+            toast.setData({
+              message: `倒计时 ${second} 秒`
+            });
+          } else {
+            clearInterval(timer);
+            Toast.clear();
+            resolve(true);
+          }
+        }, 1000);
+      })
+    }
+
+    showBeginTip() {
+      Notify({
+        text: '开始测验',
+        duration: 1000,
+        selector: '#van-notify',
+        backgroundColor: '#F56C6C'
+      });
+    }
+
+    start() {
+      let offset = 10;
+      let exeCount = this.maxSeconds * 10;
+
+      let interval = setInterval(() => {
+        if (this.isChoiceProcessing || this.isCheckProcessing) {
+          return;
+        }
+
+        this.sliderLeft -= 100 / exeCount;
+        this.leftSeconds = Math.ceil(this.sliderLeft / 100 * this.maxSeconds);
+        if (this.sliderLeft <= 0) {
+          clearInterval(interval);
+          this.showHonor();
+        } else {
+          this.$apply();
+        }
+      }, 1000 / offset);
+      this.intervalList.push(interval);
+    }
+
+    async onLoad(options) {
       let id = options.id || "yxlm";
       let item = DATA[id];
       this.item = item;
       this.id = id;
       log(item);
+
+      await this.daojishi();
+      this.showBeginTip();
+      this.start();
     }  // 在Page和Component共用的生命周期函数
 
     onShow() {
@@ -140,16 +215,30 @@
         "van-cell-group": "../components/zanui/cell-group/index",
         "van-loading": "../components/zanui/loading/index",
         "van-icon": "../components/zanui/icon/index",
+        "van-slider": "../components/zanui/slider/index",
+        "van-toast": "../components/zanui/toast/index",
+        "van-notify": "../components/zanui/notify/index",
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
+
+    resetTimer() {
+      this.sliderLeft = 100;
+      this.leftSeconds = this.maxSeconds;
+    }
+
     data = {
+      sliderLeft: 100,
+      leftSeconds: 10,
+      maxSeconds: 10,
       id: "",
       item: null,
       index: 0,
       isChoiceProcessing: false,
       currentChoiceIndex: -1,
       isCanClickChoice: true,
+      intervalList: [],
+      isCheckProcessing: false,
     };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
     components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -171,8 +260,14 @@
 
     watch = {};  // 声明数据watcher（详见后文介绍）
 
+    clearInterval() {
+      this.intervalList.forEach(i => {
+        clearInterval(i);
+      })
+    }
 
     showHonor() {
+      this.clearInterval();
       let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
       let anwserIndex = this.index;
       let allCount = this.item.questions.length;
@@ -180,7 +275,7 @@
       let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
       if (levelIndex >= level.length) levelIndex = level.length - 1;
       let levelResult = level[levelIndex];
-      let url = `result?id=${this.id}&rightNum=${this.index}&pj=被联盟认定为${levelResult}段位`
+      let url = `result?id=${this.id}&rightNum=${this.index}&pj=被联盟认定为${levelResult}段位&allNum=${allCount}`;
 
       wx.navigateTo({
         url
@@ -196,24 +291,31 @@
 
         await util.sleep(800);
         this.isChoiceProcessing = false;
+        this.isCheckProcessing = true;
         this.$apply();
 
         await util.sleep(200);
 
+        let isWrongOrOver = false;
+
         if ((index + 1) === this.question.a) {
           this.index += 1;
-
-          log(this.index, this.item.questions.length);
+          this.$apply();
           if (this.index >= this.item.questions.length) {
-            this.$apply();
-            return this.showHonor();
+            isWrongOrOver = true;
           }
+        } else {
+          isWrongOrOver = true;
+        }
 
+        this.isCheckProcessing = false;
+        if (isWrongOrOver) {
+          this.showHonor();
+        } else {
           this.currentChoiceIndex = -1;
           this.isCanClickChoice = true;
+          this.resetTimer();
           this.$apply();
-        } else {
-          this.showHonor();
         }
       }
     };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
