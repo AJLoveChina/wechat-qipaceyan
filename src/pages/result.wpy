@@ -9,15 +9,31 @@
       line-height: 50px;
     }
   }
+
+  .result-wrap{
+    text-align: center;
+    .text{
+      display: block;
+      margin:20px 0;
+    }
+    .van-button{
+      margin: 20px 0;
+    }
+  }
 </style>
 <template>
 
   <poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
   </poster>
 
-  <view class="loading-wrap">
+  <view class="loading-wrap" wx:if="{{detail == null}}">
     <van-loading color="#333" size="50px"></van-loading>
     <text class="tip">正在生成评估结果~</text>
+  </view>
+
+  <view class="result-wrap" wx:if="{{detail != null}}">
+    <text class="text">{{item.title}} 评估报告已经生成</text>
+    <van-button custom-class="van-button" type="primary" @tap="reShow">点击查看报告, 长按报告图片即可保存</van-button>
   </view>
 
 </template>
@@ -42,7 +58,10 @@
       wx.previewImage({
         current: detail,
         urls: [detail]
-      })
+      });
+
+      this.detail = detail;
+      this.$apply();
     }
 
     getRelativeImgPath(toPath) {
@@ -53,13 +72,28 @@
 
     }
 
-    onLoad(options) {
+    getUserInfo() {
+      return new Promise((resolve, reject) => {
+        this.$parent.getUserInfo(userInfo => {
+          resolve(userInfo);
+        })
+      })
+    }
+
+    async onLoad(options) {
+
+      let userInfo = await this.getUserInfo();
+      log(userInfo);
+      let nickName = userInfo.nickName;
+      let avatarUrl = userInfo.avatarUrl;
+
       let params = Object.assign({
         id: 'yxlm',
         rightNum: 2,
         pj: "被联盟认定为超凡大师"
       }, options);
       let item = DATA[params.id];
+      this.item = item;
       log(params)
 
       this.id = params.id;
@@ -96,7 +130,7 @@
             x: 113,
             y: 61,
             baseLine: 'middle',
-            text: 'Baker',
+            text: `${nickName}`,
             fontSize: 32,
             color: '#8d8d8d',
           },
@@ -169,7 +203,7 @@
             x: 360,
             y: 1123,
             baseLine: 'top',
-            text: '和 baker 一较高下',
+            text: `和 ${nickName} 一较高下`,
             fontSize: 28,
             color: '#929292',
           },
@@ -182,7 +216,7 @@
             x: 30,
             y: 30,
             borderRadius: 62,
-            url: 'http://localhost:4545/TIM截图20190117174032.jpg',
+            url: `${avatarUrl}`
           },
           {
             width: 634,
@@ -208,6 +242,8 @@
         ]
       };
 
+      this.$apply();
+
       //this.$invoke("poster", "create");
       setTimeout(() => {
         Poster.create();
@@ -221,14 +257,17 @@
       usingComponents: {
         "poster": "../components/poster-canvas/poster/index",
         "van-loading": "../components/zanui/loading/index",
+        "van-button": "../components/zanui/button/index",
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
     data = {
+      detail: null,
       id: "",
       rightNum: 0,
       pj: "",
-      posterConfig: {}
+      posterConfig: {},
+      item: {}
     };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
     components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -239,7 +278,13 @@
 
     watch = {};  // 声明数据watcher（详见后文介绍）
 
-    methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+    methods = {
+      reShow() {
+        this.onPosterSuccess({
+          detail: this.detail
+        });
+      }
+    };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
 
     events = {};  // 声明组件之间的事件处理函数
   }

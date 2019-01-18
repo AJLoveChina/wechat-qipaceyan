@@ -25,10 +25,10 @@
     config = {
       pages: [
         'pages/result',
+        'pages/index',
         'pages/choices',
         'pages/play',
         'pages/home',
-        'pages/index',
       ],
       window: {
         backgroundTextStyle: 'light',
