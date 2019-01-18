@@ -1,16 +1,32 @@
-<style>
+<style scoped lang="less">
+  .loading-wrap{
+    text-align: center;
+    padding: 100px 0;
 
+    .tip{
+      display: block;
+      font-size:25px;
+      line-height: 50px;
+    }
+  }
 </style>
 <template>
 
   <poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
-    <button>正在生成海报...</button>
   </poster>
+
+  <view class="loading-wrap">
+    <van-loading color="#333" size="50px"></van-loading>
+    <text class="tip">正在生成评估结果~</text>
+  </view>
 
 </template>
 <script>
   import wepy from 'wepy';
   import LOG from 'easy.log.js'
+  import DATA from '../data/data'
+  import util from '../common/util'
+  import Poster from '../components/poster-canvas/poster/poster'
 
   const log = LOG("app.result");
 
@@ -29,6 +45,10 @@
       })
     }
 
+    getRelativeImgPath(toPath) {
+      return util.relative("../components/poster-canvas/poster", toPath);
+    }
+
     onPosterFail() {
 
     }
@@ -39,6 +59,7 @@
         rightNum: 2,
         pj: "被联盟认定为超凡大师"
       }, options);
+      let item = DATA[params.id];
       log(params)
 
       this.id = params.id;
@@ -106,13 +127,13 @@
               {
                 text: '完成',
                 fontSize: 28,
-                color: '#ec1731',
+                color: '#ec4b4b',
               },
               {
                 text: '10道题',
-                fontSize: 36,
-                color: '#ec1731',
-                marginLeft: 30,
+                fontSize: 28,
+                color: '#ec4b4b',
+                marginLeft: 10,
               }
             ]
           },
@@ -132,20 +153,8 @@
               {
                 text: '被联盟认定为超凡大师',
                 fontSize: 28,
-                color: '#ec1731',
+                color: '#ec4b4b',
               },
-              // {
-              //     text: '七天退货',
-              //     fontSize: 28,
-              //     color: '#929292',
-              //     marginLeft: 50,
-              // },
-              // {
-              //     text: '运费险',
-              //     fontSize: 28,
-              //     color: '#929292',
-              //     marginLeft: 50,
-              // },
             ]
           },
           {
@@ -180,27 +189,29 @@
             height: 634,
             x: 59,
             y: 210,
-            url: 'http://localhost:4545/11222746.jpg',
+            url: this.getRelativeImgPath(`${item.img}`),
           },
           {
             width: 220,
             height: 220,
             x: 92,
             y: 1020,
-            url: 'http://localhost:4545/TIM截图20190117174303.jpg',
+            url: this.getRelativeImgPath('../images/xiaochenxu-qrcode.jpg'),
           },
           {
             width: 750,
             height: 90,
             x: 0,
             y: 1244,
-            url: 'http://localhost:4545/20190117173013.png',
+            url:  this.getRelativeImgPath('../images/result-bottom.png'),
           }
         ]
-
       };
 
       //this.$invoke("poster", "create");
+      setTimeout(() => {
+        Poster.create();
+      }, 1000);
     }  // 在Page和Component共用的生命周期函数
 
     onShow() {
@@ -208,7 +219,8 @@
 
     config = {
       usingComponents: {
-        "poster": "../components/poster-canvas/poster/index"
+        "poster": "../components/poster-canvas/poster/index",
+        "van-loading": "../components/zanui/loading/index",
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
