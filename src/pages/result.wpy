@@ -1,7 +1,6 @@
 <style scoped lang="less">
   .loading-wrap{
     text-align: center;
-    padding: 100px 0;
 
     .tip{
       display: block;
@@ -20,6 +19,12 @@
       margin: 20px 0;
     }
   }
+  .small-tip{
+    font-size:12px;
+  }
+  .loading-do{
+    padding-top:100px;
+  }
 </style>
 <template>
 
@@ -34,8 +39,13 @@
   </poster>
 
   <view class="loading-wrap" wx:if="{{detail == null}}">
-    <van-loading color="#333" size="50px"></van-loading>
-    <text class="tip">正在生成评估结果~</text>
+    <button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">点击生成您的专属报告</button>
+    <text class="small-tip">出于安全策略需要点击才能获取您的信息, 给您造成不便敬请谅解</text>
+
+    <view class="loading-do" wx:if="{{doing}}">
+      <van-loading color="#333" size="50px" ></van-loading>
+      <text class="tip">正在生成评估结果~</text>
+    </view>
   </view>
 
   <view class="result-wrap" wx:if="{{detail != null}}">
@@ -87,10 +97,7 @@
       })
     }
 
-    async onLoad(options) {
-
-      let userInfo = await this.getUserInfo();
-      log(userInfo);
+    start(userInfo) {
       let nickName = userInfo.nickName;
       let avatarUrl = userInfo.avatarUrl;
 
@@ -99,7 +106,7 @@
         rightNum: 2,
         pj: "被联盟认定为超凡大师",
         allNum: "20"
-      }, options);
+      }, this.options);
       let item = DATA[params.id];
       this.item = item;
       log(params);
@@ -238,7 +245,7 @@
             height: 220,
             x: 92,
             y: 1020,
-            url: this.getRelativeImgPath('../images/xiaochenxu-qrcode.jpg'),
+            url: this.getRelativeImgPath('../images/qrcode.jpg'),
           },
           {
             width: 750,
@@ -256,6 +263,10 @@
       setTimeout(() => {
         Poster.create();
       }, 1000);
+    }
+
+    async onLoad(options) {
+      this.options = options;
     }  // 在Page和Component共用的生命周期函数
 
     onShow() {
@@ -271,7 +282,9 @@
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
     data = {
+      options: {},
       detail: null,
+      doing: false,
       id: "",
       rightNum: 0,
       pj: "",
@@ -288,6 +301,12 @@
     watch = {};  // 声明数据watcher（详见后文介绍）
 
     methods = {
+      onGetUserInfo(e) {
+        log(e);
+        this.doing = true;
+        this.start(e.detail.userInfo);
+      },
+
       reShow() {
         this.onPosterSuccess({
           detail: this.detail

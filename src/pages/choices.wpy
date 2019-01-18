@@ -59,60 +59,64 @@
   <view>
     <text class="paper-title">{{item.title}}</text>
 
-    <view class="percentage-wrap">
-      <text class="tip">当前进度</text>
-      <van-progress percentage="{{percentage}}"></van-progress>
+    <view wx:if="{{!isOver}}">
+      <view class="percentage-wrap">
+        <text class="tip">当前进度</text>
+        <van-progress percentage="{{percentage}}"></van-progress>
 
-      <text class="tip mt10">剩余时间 : {{leftSeconds}}s</text>
-      <van-slider
-        value="{{ sliderLeft }}"
-        use-button-slot
-        bind:drag="onDrag"
-      >
-      </van-slider>
-    </view>
+        <text class="tip mt10">剩余时间 : {{leftSeconds}}s</text>
+        <van-slider
+          value="{{ sliderLeft }}"
+          use-button-slot
+          bind:drag="onDrag"
+        >
+        </van-slider>
+      </view>
 
-    <view class="q-wrap">
+      <view class="q-wrap">
 
-      <text class="q">{{question.q}}</text>
+        <text class="q">{{question.q}}</text>
 
-      <view class="choice-wrap">
-        <van-cell-group>
-          <repeat for="{{question.c}}" item="one" index="index" key="index">
-            <view class="choice">
-              <van-cell
-                @tap="choose({{index}})">
+        <view class="choice-wrap">
+          <van-cell-group>
+            <repeat for="{{question.c}}" item="one" index="index" key="index">
+              <view class="choice">
+                <van-cell
+                  @tap="choose({{index}})">
 
-                <view slot="title">
-                  <text class="title">{{one}}</text>
-                </view>
+                  <view slot="title">
+                    <text class="title">{{one}}</text>
+                  </view>
 
-                <view slot="right-icon">
-                  <block wx:if="{{(currentChoiceIndex === index && isChoiceProcessing)}}">
-                    <van-loading size="20px" color="#333"></van-loading>
-                  </block>
-                  <block wx:if="{{(currentChoiceIndex === index && !isChoiceProcessing)}}">
-                    <block wx:if="{{currentChoiceIndex + 1 === question.a}}">
-                      <van-icon name="passed" color="#d1ecf1" size="20px"></van-icon>
+                  <view slot="right-icon">
+                    <block wx:if="{{(currentChoiceIndex === index && isChoiceProcessing)}}">
+                      <van-loading size="20px" color="#333"></van-loading>
                     </block>
-                    <block wx:if="{{currentChoiceIndex + 1 !== question.a}}">
-                      <van-icon name="close" color="#f8d7da" size="20px"></van-icon>
+                    <block wx:if="{{(currentChoiceIndex === index && !isChoiceProcessing)}}">
+                      <block wx:if="{{currentChoiceIndex + 1 === question.a}}">
+                        <van-icon name="passed" color="#d1ecf1" size="20px"></van-icon>
+                      </block>
+                      <block wx:if="{{currentChoiceIndex + 1 !== question.a}}">
+                        <van-icon name="close" color="#f8d7da" size="20px"></van-icon>
+                      </block>
                     </block>
-                  </block>
-                </view>
-              </van-cell>
-            </view>
-          </repeat>
-        </van-cell-group>
+                  </view>
+                </van-cell>
+              </view>
+            </repeat>
+          </van-cell-group>
 
-        <view class="tip-wrap">
-          <van-icon name="smile-o"></van-icon>
-          <text class="tip">点击即可选择</text>
+          <view class="tip-wrap">
+            <van-icon name="smile-o"></van-icon>
+            <text class="tip">点击即可选择</text>
+          </view>
+
         </view>
 
       </view>
-
     </view>
+
+    <button wx:if="{{isOver}}" @tap="gohome">您已经完成考试, 点击返回首页</button>
 
     <van-toast id="custom-selector" />
     <van-notify id="van-notify" />
@@ -240,6 +244,7 @@
       isCanClickChoice: true,
       intervalList: [],
       isCheckProcessing: false,
+      isOver: false,
     };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
     components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -268,17 +273,25 @@
     }
 
     showHonor() {
+      this.isOver = true;
       this.clearInterval();
       let honor = this.item.getHonor(this.index);
       let allCount = this.item.questions.length;
       let url = `result?id=${this.id}&rightNum=${this.index}&pj=${honor.pj}&allNum=${allCount}`;
 
+      this.$apply();
       wx.navigateTo({
         url
       })
     }
 
     methods = {
+      gohome() {
+        wx.navigateTo({
+          url: "home"
+        })
+      },
+
       async choose(index) {
         if (!this.isCanClickChoice) return;
         this.isCanClickChoice = false;
