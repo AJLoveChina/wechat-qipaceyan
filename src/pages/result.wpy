@@ -23,6 +23,13 @@
 </style>
 <template>
 
+  <van-nav-bar
+    title="报告结果"
+    left-text="首页"
+    left-arrow
+    bind:click-left="onClickLeft"
+  />
+
   <poster id="poster" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail">
   </poster>
 
@@ -258,6 +265,7 @@
         "poster": "../components/poster-canvas/poster/index",
         "van-loading": "../components/zanui/loading/index",
         "van-button": "../components/zanui/button/index",
+        "van-nav-bar": "../components/zanui/nav-bar/index",
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
@@ -282,6 +290,12 @@
       reShow() {
         this.onPosterSuccess({
           detail: this.detail
+        });
+      },
+
+      onClickLeft() {
+        wx.navigateTo({
+          url: "home"
         });
       }
     };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明

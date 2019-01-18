@@ -2,6 +2,14 @@
 
 </style>
 <template>
+  <van-nav-bar
+    title="试卷预览"
+    left-text="首页"
+    left-arrow
+    bind:click-left="onClickLeft"
+  />
+
+
   <view>
     <view wx:if="{{item != null}}">
       <examMonitor :item.sync="item" :id.sync="id"></examMonitor>
@@ -22,6 +30,7 @@
     customFunction() {
     }  //自定义方法
 
+
     onLoad(options) {
       log(options);
       this.id = options.id || "yxlm";
@@ -34,7 +43,11 @@
     onShow() {
     }  // 只在Page中存在的页面生命周期函数
 
-    config = {};  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    config = {
+      usingComponents: {
+        "van-nav-bar": "../components/zanui/nav-bar/index",
+      }
+    };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
     data = {
       id: "",
@@ -51,7 +64,13 @@
 
     watch = {};  // 声明数据watcher（详见后文介绍）
 
-    methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+    methods = {
+      onClickLeft() {
+        wx.navigateTo({
+          url: "home"
+        });
+      }
+    };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
 
     events = {};  // 声明组件之间的事件处理函数
   }

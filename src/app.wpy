@@ -24,16 +24,16 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/play',
         'pages/result',
         'pages/index',
         'pages/choices',
-        'pages/play',
         'pages/home',
       ],
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: 'WeChat',
+        navigationBarTitleText: '奇葩小测验',
         navigationBarTextStyle: 'black',
         backgroundColor: "#fafafa",
       }
