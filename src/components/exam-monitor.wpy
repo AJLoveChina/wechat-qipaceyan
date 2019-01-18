@@ -32,7 +32,7 @@
     .img{
       text-align: center;
       height:300px;
-      background-color: #eeeeee;
+      background-color: #fafafa;
 
       display:flex;
       justify-content:center;
@@ -40,6 +40,7 @@
 
       image{
         width:100%;
+        box-shadow: #fafafa 0 0 10px;
       }
     }
 
@@ -84,7 +85,7 @@
   <view>
     <view class="wrap">
       <view class="img">
-        <image class="top-img" mode="center" src="{{item.img}}"></image>
+        <image class="top-img" mode="scaleToFill" src="{{item.img}}"></image>
       </view>
       <view class="info">
         <text class="title">{{item.desc}}</text>
