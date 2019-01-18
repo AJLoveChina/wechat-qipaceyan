@@ -1,85 +1,98 @@
-<style>
-  .title{
+<style lang="less" scoped>
+  .title {
     font-family: "Microsoft YaHei UI";
     font-weight: bold;
-    font-size:30px;
-    color:lightblue;
+    font-size: 30px;
+    color: lightblue;
     text-align: center;
     display: block;
-    margin:20px;
+    margin: 20px;
   }
-  .title2{
-    color:#aaa;
+
+  .title2 {
+    color: #aaa;
+  }
+
+  .icons {
+    text-align: center;
   }
 </style>
 <template>
   <view>
     <text class="title">奇葩小测验</text>
+    <view class="icons">
+      <van-icon color="#E6A23C" name="star"/>
+      <van-icon color="#67C23A" name="like-o"/>
+      <van-icon color="#F56C6C" name="smile-o"/>
+      <van-icon color="#909399" name="medel-o"/>
+      <van-icon color="#409EFF" name="hot-o"/>
+    </view>
 
     <van-cell
       title-class="title2"
-      title="选择考卷" />
+      title="选择考卷"/>
     <van-cell-group>
       <van-cell
         title="英雄联盟"
         icon="fire"
         url="play?id=yxlm"
-        is-link="{{true}}" />
+        is-link="{{true}}"/>
     </van-cell-group>
 
-
-    <van-cell title-class="title2" title="测试"/>
-    <van-cell-group>
-      <van-cell
-        title="demo"
-        url="index"
-        is-link="{{true}}" />
-    </van-cell-group>
+    <!--<van-cell title-class="title2" title="测试"/>-->
+    <!--<van-cell-group>-->
+    <!--<van-cell-->
+    <!--title="demo"-->
+    <!--url="index"-->
+    <!--is-link="{{true}}" />-->
+    <!--</van-cell-group>-->
   </view>
 </template>
 <script>
-    import wepy from 'wepy';
+  import wepy from 'wepy';
 
-    export default class MyPage extends wepy.page {
+  export default class MyPage extends wepy.page {
     // export default class MyComponent extends wepy.component {
-        customData = {}  // 自定义数据
+    customData = {}  // 自定义数据
 
-        customFunction() {
-        }  //自定义方法
+    customFunction() {
+    }  //自定义方法
 
-        onLoad() {
-        }  // 在Page和Component共用的生命周期函数
+    onLoad() {
+    }  // 在Page和Component共用的生命周期函数
 
-        onShow() {
-        }  // 只在Page中存在的页面生命周期函数
+    onShow() {
+    }  // 只在Page中存在的页面生命周期函数
 
-        config = {
-          usingComponents: {
-            zbtn: "../components/zanui/button/index",
-            zpanel: "../components/zanui/panel/index",
-            zrow: "../components/zanui/row/index",
-            zcol: "../components/zanui/col/index",
-            zcollapse: "../components/zanui/collapse/index",
-            "zcollapse-item": "../components/zanui/collapse-item/index",
-            "van-cell": "../components/zanui/cell/index",
-            "van-cell-group": "../components/zanui/cell-group/index",
-          }
-        };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    config = {
+      usingComponents: {
+        zbtn: "../components/zanui/button/index",
+        zpanel: "../components/zanui/panel/index",
+        zrow: "../components/zanui/row/index",
+        zcol: "../components/zanui/col/index",
+        zcollapse: "../components/zanui/collapse/index",
+        "zcollapse-item": "../components/zanui/collapse-item/index",
+        "van-cell": "../components/zanui/cell/index",
+        "van-cell-group": "../components/zanui/cell-group/index",
+        "van-icon": "../components/zanui/icon/index",
+      }
+    };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
-        data = {
-          activeNames: []
-        };  // 页面所需数据均需在这里声明，可用于模板数据绑定
+    data = {
+      activeNames: []
+    };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
-        components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+    components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
 
-        mixins = [];  // 声明页面所引用的Mixin实例
+    mixins = [];  // 声明页面所引用的Mixin实例
 
-        computed = {};  // 声明计算属性（详见后文介绍）
+    computed = {};  // 声明计算属性（详见后文介绍）
 
-        watch = {};  // 声明数据watcher（详见后文介绍）
+    watch = {};  // 声明数据watcher（详见后文介绍）
 
-        methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+    methods = {
+    };  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
 
-        events = {};  // 声明组件之间的事件处理函数
-    }
+    events = {};  // 声明组件之间的事件处理函数
+  }
 </script>
