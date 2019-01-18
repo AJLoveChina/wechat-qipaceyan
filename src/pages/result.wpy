@@ -95,7 +95,7 @@
       let avatarUrl = userInfo.avatarUrl;
 
       let params = Object.assign({
-        id: 'yxlm',
+        id: 'zjl',
         rightNum: 2,
         pj: "被联盟认定为超凡大师",
         allNum: "20"
@@ -146,8 +146,8 @@
             x: 30,
             y: 113,
             baseLine: 'top',
-            text: '我刚刚参加了英雄联盟段位考试',
-            fontSize: 38,
+            text: `我刚刚参加了${item.title}`,
+            fontSize: 30,
             color: '#080808',
           },
           {
@@ -203,7 +203,7 @@
             x: 360,
             y: 1065,
             baseLine: 'top',
-            text: '长按识别小程序码',
+            text: '长按参与考试',
             fontSize: 38,
             color: '#080808',
           },

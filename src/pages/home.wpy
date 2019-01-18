@@ -37,6 +37,10 @@
         icon="fire"
         url="play?id=yxlm"
         is-link="{{true}}"/>
+      <van-cell
+        title="周董粉丝四六级考试"
+        url="play?id=zjl"
+        is-link="{{true}}"/>
     </van-cell-group>
 
     <!--<van-cell title-class="title2" title="测试"/>-->

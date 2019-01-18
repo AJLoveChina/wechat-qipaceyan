@@ -27,10 +27,10 @@
   export default class extends wepy.app {
     config = {
       pages: [
-        'pages/play',
-        'pages/choices',
         'pages/result',
+        'pages/play',
         'pages/home',
+        'pages/choices',
         'pages/index',
       ],
       window: {

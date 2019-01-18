@@ -33,7 +33,7 @@
 
     onLoad(options) {
       log(options);
-      this.id = options.id || "yxlm";
+      this.id = options.id || "zjl";
       let data = DATA[this.id];
       log(data);
 
