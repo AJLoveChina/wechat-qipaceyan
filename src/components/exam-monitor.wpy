@@ -31,7 +31,7 @@
 
     .img{
       text-align: center;
-      height:300px;
+      height:250px;
       background-color: #fafafa;
 
       display:flex;

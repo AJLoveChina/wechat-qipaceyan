@@ -6,7 +6,7 @@ module.exports = {
     "每题你只有10秒钟的回答时间",
     "段位分为青铜,白银,黄金,白金,钻石,超凡大师,最强王者",
   ],
-  img: "../images/yxlm.jpg",
+  img: "https://boke-1251259897.cossh.myqcloud.com/mini-program/yxlm.jpg",
   getHonor(anwserIndex) {
     let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
     let allCount = this.questions.length;

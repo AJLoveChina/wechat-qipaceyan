@@ -6,7 +6,7 @@ module.exports = {
     "每题你只有10秒钟的回答时间",
     "段位从低到高依次为黑粉, 路人粉, 普通粉, 高级粉, 超级粉, 无敌螺蛳粉, 挚爱此生粉",
   ],
-  img: "../images/zjl.jpg",
+  img: "https://boke-1251259897.cossh.myqcloud.com/mini-program/zjl.jpg",
   getHonor(anwserIndex) {
     let level = ["黑粉", "路人粉", "普通粉", "高级粉", "超级粉", "无敌螺蛳粉", "挚爱此生粉"];
     let allCount = this.questions.length;

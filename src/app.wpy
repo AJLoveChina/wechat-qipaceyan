@@ -28,8 +28,8 @@
     config = {
       pages: [
         'pages/home',
-        'pages/result',
         'pages/play',
+        'pages/result',
         'pages/choices',
         'pages/index',
       ],

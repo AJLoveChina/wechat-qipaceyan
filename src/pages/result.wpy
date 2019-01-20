@@ -82,6 +82,9 @@
     }
 
     getRelativeImgPath(toPath) {
+      if (/^https/.test(toPath)) {
+        return toPath;
+      }
       return util.relative("../components/poster-canvas/poster", toPath);
     }
 
@@ -245,14 +248,14 @@
             height: 220,
             x: 92,
             y: 1020,
-            url: this.getRelativeImgPath('../images/qrcode.jpg'),
+            url: this.getRelativeImgPath('https://boke-1251259897.cossh.myqcloud.com/mini-program/qrcodex8.jpg'),
           },
           {
             width: 750,
             height: 90,
             x: 0,
             y: 1244,
-            url:  this.getRelativeImgPath('../images/result-bottom.png'),
+            url:  this.getRelativeImgPath('https://boke-1251259897.cossh.myqcloud.com/mini-program/result-bottom.png'),
           }
         ]
       };
