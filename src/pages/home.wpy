@@ -44,14 +44,6 @@
       </repeat>
 
     </van-cell-group>
-
-    <!--<van-cell title-class="title2" title="测试"/>-->
-    <!--<van-cell-group>-->
-    <!--<van-cell-->
-    <!--title="demo"-->
-    <!--url="index"-->
-    <!--is-link="{{true}}" />-->
-    <!--</van-cell-group>-->
   </view>
 </template>
 <script>

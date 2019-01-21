@@ -175,8 +175,8 @@
     }
 
     start() {
-      let offset = 10;
-      let exeCount = this.maxSeconds * 10;
+      let period = 500; // ms
+      let exeCount = this.maxSeconds * (1000 / period);
 
       let interval = setInterval(() => {
         if (this.isChoiceProcessing || this.isCheckProcessing) {
@@ -184,6 +184,9 @@
         }
 
         this.sliderLeft -= 100 / exeCount;
+        if (this.sliderLeft <= 0) {
+          this.sliderLeft = 0;
+        }
         this.leftSeconds = Math.ceil(this.sliderLeft / 100 * this.maxSeconds);
         if (this.sliderLeft <= 0) {
           clearInterval(interval);
@@ -191,7 +194,7 @@
         } else {
           this.$apply();
         }
-      }, 1000 / offset);
+      }, period);
       this.intervalList.push(interval);
     }
 
