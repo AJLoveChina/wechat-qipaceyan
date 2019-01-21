@@ -17,12 +17,17 @@
 <script>
   import wepy from 'wepy'
   import 'wepy-async-function'
+  const acorn = require('acorn');
+  const walk = require("acorn-walk");
+  import JSON2 from './lib/json2'
+  import LOG from 'easy.log.js'
 
   import {setStore} from 'wepy-redux'
   import configStore from './store'
 
   const store = configStore()
   setStore(store)
+  const log = LOG("app");
 
   export default class extends wepy.app {
     config = {
@@ -43,7 +48,8 @@
     }
 
     globalData = {
-      userInfo: null
+      userInfo: null,
+      JSON_DATA: null
     }
 
     constructor() {
@@ -52,7 +58,7 @@
     }
 
     onLaunch() {
-      this.testAsync()
+      this.testAsync();
     }
 
     sleep(s) {
@@ -66,19 +72,6 @@
     async testAsync() {
       const data = await this.sleep(3)
       console.log(data)
-    }
-
-    getUserInfo(cb) {
-      const that = this
-      if (this.globalData.userInfo) {
-        return this.globalData.userInfo
-      }
-      wepy.getUserInfo({
-        success(res) {
-          that.globalData.userInfo = res.userInfo
-          cb && cb(res.userInfo)
-        }
-      })
     }
   }
 </script>

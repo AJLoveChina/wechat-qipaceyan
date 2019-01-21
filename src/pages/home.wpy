@@ -54,7 +54,9 @@
 </template>
 <script>
   import wepy from 'wepy';
+  import LOG from 'easy.log.js'
 
+  const log = LOG("app.home");
   export default class MyPage extends wepy.page {
     // export default class MyComponent extends wepy.component {
     customData = {}  // 自定义数据

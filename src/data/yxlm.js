@@ -7,17 +7,8 @@ module.exports = {
     "段位分为青铜,白银,黄金,白金,钻石,超凡大师,最强王者",
   ],
   img: "https://boke-1251259897.cossh.myqcloud.com/mini-program/yxlm.jpg",
-  getHonor(anwserIndex) {
-    let level = ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"];
-    let allCount = this.questions.length;
-
-    let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
-    if (levelIndex >= level.length) levelIndex = level.length - 1;
-    let levelResult = level[levelIndex];
-    return {
-      pj: `被联盟认定为${levelResult}段位`
-    }
-  },
+  levelList: ["青铜", "白银", "黄金", "白金", "钻石", "超凡大师", "最强王者"],
+  honorTemplate: "被联盟认定为${level}段位",
   questions: [
     {
       q: "英雄联盟召唤师峡谷开局多少秒才可以出泉水?",

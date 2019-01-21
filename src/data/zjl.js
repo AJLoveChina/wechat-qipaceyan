@@ -7,17 +7,8 @@ module.exports = {
     "段位从低到高依次为黑粉, 路人粉, 普通粉, 高级粉, 超级粉, 无敌螺蛳粉, 挚爱此生粉",
   ],
   img: "https://boke-1251259897.cossh.myqcloud.com/mini-program/zjl.jpg",
-  getHonor(anwserIndex) {
-    let level = ["黑粉", "路人粉", "普通粉", "高级粉", "超级粉", "无敌螺蛳粉", "挚爱此生粉"];
-    let allCount = this.questions.length;
-
-    let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
-    if (levelIndex >= level.length) levelIndex = level.length - 1;
-    let levelResult = level[levelIndex];
-    return {
-      pj: `被组织认定为${levelResult}`
-    }
-  },
+  levelList: ["黑粉", "路人粉", "普通粉", "高级粉", "超级粉", "无敌螺蛳粉", "挚爱此生粉"],
+  honorTemplate: "被组织认定为${level}",
   questions: [
     {
       q: "杰伦的生日是几月几号?",

@@ -272,12 +272,26 @@
       })
     }
 
+
+    getLevel() {
+      let level = this.item.levelList;
+      let anwserIndex = this.index;
+      let allCount = this.item.questions.length;
+
+      let levelIndex = Math.floor((anwserIndex / allCount) * level.length);
+      if (levelIndex >= level.length) levelIndex = level.length - 1;
+      let levelResult = level[levelIndex];
+      return levelResult;
+    }
+
     showHonor() {
       this.isOver = true;
       this.clearInterval();
-      let honor = this.item.getHonor(this.index);
+
+      let levelResult = this.getLevel();
+      let pj = this.item.honorTemplate.replace("${level}", levelResult);
       let allCount = this.item.questions.length;
-      let url = `result?id=${this.id}&rightNum=${this.index}&pj=${honor.pj}&allNum=${allCount}`;
+      let url = `result?id=${this.id}&rightNum=${this.index}&pj=${pj}&allNum=${allCount}`;
 
       this.$apply();
       wx.navigateTo({

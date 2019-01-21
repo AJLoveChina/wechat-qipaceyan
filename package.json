@@ -17,6 +17,8 @@
   "author": "735267452@qq.com",
   "license": "MIT",
   "dependencies": {
+    "acorn": "^6.0.5",
+    "acorn-walk": "^6.1.1",
     "easy.log.js": "^1.0.0",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
