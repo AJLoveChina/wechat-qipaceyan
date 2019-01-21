@@ -16,6 +16,10 @@
   .icons {
     text-align: center;
   }
+  .loading-wrap{
+    text-align: center;
+    margin:20px 0;
+  }
 </style>
 <template>
   <view>
@@ -33,6 +37,10 @@
       title="选择考卷"/>
     <van-cell-group>
 
+      <view class="loading-wrap" wx:if="{{papers.length === 0}}">
+        <van-loading custom-class="loading" color="#666" ></van-loading>
+      </view>
+
       <repeat for="{{papers}}" index="index" item="item" key="key">
 
         <van-cell
@@ -44,12 +52,14 @@
       </repeat>
 
     </van-cell-group>
+
   </view>
 </template>
 <script>
   import wepy from 'wepy';
   import LOG from 'easy.log.js'
   import local from '../data/local'
+  import util from '../common/util'
 
   const log = LOG("app.home");
   export default class MyPage extends wepy.page {
@@ -87,6 +97,7 @@
         "van-cell": "../components/zanui/cell/index",
         "van-cell-group": "../components/zanui/cell-group/index",
         "van-icon": "../components/zanui/icon/index",
+        "van-loading": "../components/zanui/loading/index",
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 

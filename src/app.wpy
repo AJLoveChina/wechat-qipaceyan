@@ -19,11 +19,6 @@
   import 'wepy-async-function'
   import LOG from 'easy.log.js'
 
-  import {setStore} from 'wepy-redux'
-  import configStore from './store'
-
-  const store = configStore()
-  setStore(store)
   const log = LOG("app");
 
   export default class extends wepy.app {
@@ -33,7 +28,6 @@
         'pages/play',
         'pages/result',
         'pages/choices',
-        'pages/index',
       ],
       window: {
         backgroundTextStyle: 'light',
