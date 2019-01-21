@@ -57,7 +57,7 @@
 <script>
   import wepy from 'wepy';
   import LOG from 'easy.log.js'
-  import DATA from '../data/data'
+  import local from '../data/local'
   import util from '../common/util'
   import Poster from '../components/poster-canvas/poster/poster'
 
@@ -101,6 +101,7 @@
     }
 
     start(userInfo) {
+      let DATA = local.get();
       let nickName = userInfo.nickName;
       let avatarUrl = userInfo.avatarUrl;
 

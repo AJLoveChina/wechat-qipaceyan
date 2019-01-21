@@ -32,15 +32,17 @@
       title-class="title2"
       title="选择考卷"/>
     <van-cell-group>
-      <van-cell
-        title="英雄联盟"
-        icon="fire"
-        url="play?id=yxlm"
-        is-link="{{true}}"/>
-      <van-cell
-        title="周董粉丝四六级考试"
-        url="play?id=zjl"
-        is-link="{{true}}"/>
+
+      <repeat for="{{papers}}" index="index" item="item" key="key">
+
+        <van-cell
+          title="{{item.item.title}}"
+          url="play?id={{item.k}}"
+          icon="{{item.item.icon}}"
+          is-link="{{true}}"/>
+
+      </repeat>
+
     </van-cell-group>
 
     <!--<van-cell title-class="title2" title="测试"/>-->
@@ -55,6 +57,7 @@
 <script>
   import wepy from 'wepy';
   import LOG from 'easy.log.js'
+  import local from '../data/local'
 
   const log = LOG("app.home");
   export default class MyPage extends wepy.page {
@@ -64,7 +67,18 @@
     customFunction() {
     }  //自定义方法
 
-    onLoad() {
+    async onLoad() {
+      let json = await this.loadDataJson();
+      local.save(json);
+      let list = [];
+      for (let k in json) {
+        list.push({
+          k,
+          item: json[k]
+        })
+      }
+      this.papers = list;
+      this.$apply();
     }  // 在Page和Component共用的生命周期函数
 
     onShow() {
@@ -84,8 +98,21 @@
       }
     };  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
 
+    async loadDataJson(){
+      return new Promise((resolve, reject) => {
+        wx.request({
+          url: "https://boke-1251259897.cossh.myqcloud.com/mini-program/paper/data.json",
+          success(e) {
+            resolve(e.data);
+          }
+        })
+      })
+    }
+
+
     data = {
-      activeNames: []
+      activeNames: [],
+      papers: []
     };  // 页面所需数据均需在这里声明，可用于模板数据绑定
 
     components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件

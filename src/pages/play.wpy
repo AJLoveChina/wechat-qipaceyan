@@ -18,10 +18,11 @@
 </template>
 <script>
   import wepy from 'wepy';
-  import DATA from '../data/data'
   import LOG from 'easy.log.js'
   import examMonitor from '../components/exam-monitor'
+  import local from '../data/local';
   let log = LOG("app.play");
+
 
   export default class MyPage extends wepy.page {
     // export default class MyComponent extends wepy.component {
@@ -32,6 +33,7 @@
 
 
     onLoad(options) {
+      const DATA = local.get();
       log(options);
       this.id = options.id || "zjl";
       let data = DATA[this.id];

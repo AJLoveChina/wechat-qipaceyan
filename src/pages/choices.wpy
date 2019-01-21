@@ -125,7 +125,7 @@
 <script>
   import wepy from 'wepy';
   import LOG from 'easy.log.js'
-  import DATA from '../data/data'
+  import local from '../data/local'
   import util from '../common/util'
   import Toast from '../components/zanui/toast/toast';
   import Notify from '../components/zanui/notify/notify';
@@ -196,6 +196,7 @@
     }
 
     async onLoad(options) {
+      let DATA = local.get();
       let id = options.id || "yxlm";
       let item = DATA[id];
       util.shuffle(item.questions);
