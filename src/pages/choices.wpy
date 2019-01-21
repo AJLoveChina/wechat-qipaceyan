@@ -284,15 +284,27 @@
       return levelResult;
     }
 
+    getPercentage() {
+      return ((this.index / this.item.questions.length) * 100).toFixed(1) + "%";
+    }
+
     showHonor() {
       this.isOver = true;
       this.clearInterval();
 
-      let levelResult = this.getLevel();
-      let pj = this.item.honorTemplate.replace("${level}", levelResult);
+      let level = this.getLevel();
+      let percentage = this.getPercentage();
+      let replacements = {
+        level,
+        percentage
+      };
       let allCount = this.item.questions.length;
+      let hornorTemplate = this.item.honorTemplate;
+      for (let replaceReg in replacements) {
+        hornorTemplate = hornorTemplate.replace("${" + replaceReg + "}", replacements[replaceReg]);
+      }
+      let pj = hornorTemplate;
       let url = `result?id=${this.id}&rightNum=${this.index}&pj=${pj}&allNum=${allCount}`;
-
       this.$apply();
       wx.navigateTo({
         url

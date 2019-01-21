@@ -8,7 +8,7 @@ module.exports = {
   ],
   img: "https://boke-1251259897.cossh.myqcloud.com/mini-program/zjl.jpg",
   levelList: ["黑粉", "路人粉", "普通粉", "高级粉", "超级粉", "无敌螺蛳粉", "挚爱此生粉"],
-  honorTemplate: "被组织认定为${level}",
+  honorTemplate: "击败${percentage}的用户  被组织认定为${level}",
   questions: [
     {
       q: "杰伦的生日是几月几号?",
