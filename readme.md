@@ -30,8 +30,7 @@ npm run data
 
 
 #### 体验
-![ScreenShot](https://raw.githubusercontent.com/AJLoveChina/wechat-qipaceyan/master/xiaochenqu.jpg)
-
+![ScreenShot](https://raw.github.com/AJLoveChina/wechat-qipaceyan/master/xiaochenqu.jpg)
 
 #### License
 MIT
