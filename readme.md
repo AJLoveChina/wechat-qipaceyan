@@ -31,7 +31,7 @@ npm run data
 
 
 #### 体验
-![ScreenShot](https://raw.github.com/AJLoveChina/wechat-qipaceyan/master/xiaochenqu.png)
+![ScreenShot](https://raw.githubusercontent.com/AJLoveChina/wechat-qipaceyan/master/xiaochenqu.jpg)
 
 
 #### License
